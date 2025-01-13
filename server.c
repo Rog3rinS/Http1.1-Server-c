@@ -35,6 +35,26 @@ void* get_in_addr(struct sockaddr* sa) //get internet address, i dont know why a
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+
+void print_sockaddr_in(struct sockaddr_in *addr) { //i am expecting an address to a sockaddr_in, and
+  //got it
+  char ip[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &(addr->sin_addr), ip, sizeof(ip)); //this shit expects a pointer to the binary
+  //representation of the ipv4, what i say is basically: you got the whatever the fuck the addr is
+  //pointint to,take the value, then this value take the address of it.
+  //"OH BUT HOW ARE THE VALUE SIN_ADDR ALREADY FILLED?", getaddrinfo() took care of it, i just had
+  //to point to it.
+  printf("ipv4 address: %s\n", ip);
+  printf("port %d\n", ntohs(addr->sin_port));
+}
+
+void print_sockaddr_in6(struct sockaddr_in6 *addr6) {
+  char ip[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET6, &(addr6->sin6_addr), ip, sizeof(ip));
+  printf("ipv6 address: %s\n", ip);
+  printf("port %d\n", ntohs(addr6->sin6_port));
+}
+
 int main(int argc, char *argv[])
 {
   int sockfd, new_fd; //connection file descriptor and accepted file descriptor
@@ -61,6 +81,28 @@ int main(int argc, char *argv[])
         return 1;
     } //getaddrinfo will return a linkedlist to all my possible connection, IPV4, IPV6, and all
     //other possibles.
+
+    for (p = servinfo; p != NULL; p = p->ai_next) {
+      printf("flags: %d\n", p->ai_flags);
+      printf("family: %d\n", p->ai_family);
+      printf("socktype: %d\n", p->ai_socktype);
+      printf("addrlen: %d\n", p->ai_addrlen);
+      printf("canonname: %s\n", p->ai_canonname);
+    printf("\n");
+      printf("socket address family: %d\n", p->ai_addr->sa_family);
+      if (p->ai_family == AF_INET) {
+        struct sockaddr_in *addr = (struct sockaddr_in *)p->ai_addr; //igot an address, treat this
+      //address as if is an address to a sockaddr_in
+        print_sockaddr_in(addr); //pass this address to here buddy
+      } else if (p->ai_family == AF_INET6) {
+        struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)p->ai_addr;
+        print_sockaddr_in6(addr6);
+      }
+        printf("\n");
+
+    printf("\n");
+    printf("\n");
+    }
 
     for (p = servinfo; p != NULL; p = p->ai_next) {
       // iterating through all the next nodes addresses that my getaddrinfo()
@@ -145,9 +187,27 @@ int main(int argc, char *argv[])
         //dont, the child process will return 0, so it will only execute in the child.
         if (fork() == 0) {
           close(sockfd); // child dont need the listener
-          if (send(new_fd, "Hello, world\n", 13, 0) == -1) {
-            // just sending a msg, hello, world 13 char long, 0 flags means
-            // default
+          const char *html_content =
+              "<html><head><title>Hello World</title></head>"
+              "<body><h1>Hello, World!</h1></body></html>";
+
+          size_t content_length = strlen(html_content);
+          char msg[256];
+          snprintf(msg, sizeof(msg),
+                   "HTTP/1.1 200 OK\r\n"
+                   "Content-Type: text/html\r\n"
+                   "Content-Length: %zu\r\n"
+                   "Connection: close\r\n"
+                   "\r\n",
+                   content_length);
+
+          // Send headers first
+          if (send(new_fd, msg, strlen(msg), 0) == -1) {
+            perror("send");
+          }
+
+          // Send body next
+          if (send(new_fd, html_content, content_length, 0) == -1) {
             perror("send");
           }
 
