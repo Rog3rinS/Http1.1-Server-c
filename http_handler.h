@@ -12,7 +12,7 @@ typedef struct {
   char request_target[256];
   char protocol[16];
   char useragent[512];
-  char header[MAX_HEADERS][256];
+  char header[256];
 } HttpRequest;
 
 typedef struct {
