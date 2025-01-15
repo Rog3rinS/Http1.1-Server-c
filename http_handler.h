@@ -5,15 +5,14 @@
 #define MAX_BODY_SIZE 5242880
 #define MAX_HEADERS 16
 
-int parse_request(char* buffer, ssize_t *bytes_received, int new_fd);
 
 typedef struct {
-  char method[16];
-  char request_target[256];
-  char protocol[16];
-  char useragent[512];
-  char header[256];
-} HttpRequest;
+  char* method;
+  char* request_target;
+  char* protocol;
+  char* useragent;
+  char* header;
+} Request;
 
 typedef struct {
   int statuscode;
@@ -21,5 +20,9 @@ typedef struct {
   char header[MAX_HEADERS][256];
   char body[MAX_BODY_SIZE];
 } HttpResponse;
+
+void *parse_request(char *buffer, ssize_t *bytes_received, int new_fd);
+void send_response(int client_fd, int status_code, char *status_message, Request *Re);
+int handle_response(int client_fd, Request *Re);
 
 #endif 

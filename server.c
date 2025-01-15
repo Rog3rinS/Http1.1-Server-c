@@ -118,29 +118,14 @@ int main(int argc, char *argv[]) {
         return -1;
       }
 
-      if (parse_request(buffer, &bytes_received, new_fd) != 0) {
-        perror("parsin");
-        return -1;
-      }
+      Request *rP = parse_request(buffer, &bytes_received, new_fd);
 
       const char *html_content = "<html><head><title>Hello World</title></head>"
                                  "<body><h1>Hello, World!</h1></body></html>";
 
-      size_t content_length = strlen(html_content);
-      char msg[256];
-      snprintf(msg, sizeof(msg),
-               "HTTP/1.1 200 OK\r\n"
-               "Content-Type: text/html\r\n"
-               "Content-Length: %zu\r\n"
-               "Connection: close\r\n"
-               "\r\n",
-               content_length);
+      handle_response(new_fd, rP);
 
-      if (send(new_fd, msg, strlen(msg), 0) == -1) {
-        perror("send");
-      }
-
-      if (send(new_fd, html_content, content_length, 0) == -1) {
+      if (send(new_fd, html_content, strlen(html_content), 0) == -1) {
         perror("send");
       }
 
