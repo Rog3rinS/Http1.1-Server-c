@@ -1,20 +1,129 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple HTML Page</title>
+    <title>raw sockets</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #e74c3c; /* Red color */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        /* Main content area */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            text-align: center;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 20px;
+        }
+
+        .content-container h2 {
+            font-size: 2em;
+            color: #e74c3c; /* Red color */
+        }
+
+        .content-container p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Button styles */
+        .btn {
+            background-color: #e74c3c; /* Red color */
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #c0392b; /* Darker red on hover */
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .content-container h2 {
+                font-size: 1.8em;
+            }
+
+            .content-container p {
+                font-size: 1em;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+
+    </style>
 </head>
-
-
 <body>
 
-    <h1>Welcome to My Simple HTML Page</h1>
-    <p>This is a basic HTML page with a heading and a paragraph.</p>
-    <p>Feel free to add more content to make it more interesting!</p>
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to My Website</h1>
+        <p>(.Y.)</p>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <div class="content-container">
+            <h2>What We Do</h2>
+            <p>WE RAW DOG SOCKETS, AND HTTP BROTHER.</p>
+            <a href="/about.html" class="btn">Learn More</a>
+        </div>
+    </div>
+
 
 </body>
-
 </html>

@@ -120,14 +120,7 @@ int main(int argc, char *argv[]) {
 
       Request *rP = parse_request(buffer, &bytes_received, new_fd);
 
-      const char *html_content = "<html><head><title>Hello World</title></head>"
-                                 "<body><h1>Hello, World!</h1></body></html>";
-
       handle_response(new_fd, rP);
-
-      if (send(new_fd, html_content, strlen(html_content), 0) == -1) {
-        perror("send");
-      }
 
       close(new_fd);
       exit(0);
